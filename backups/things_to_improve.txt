@@ -1,0 +1,11 @@
+* error message not displayed at front end if data not retreived from db,only displayed at cmd line at backend;
+
+* use of functions to perform same operations.
+
+* use of complex route,no css and authentication applied if complex route is taken.
+eg :- /HS/home/create  
+This is happening because complex route cannot access files from views folder ie .js and .ccss file
+
+* display table with grades depending on the grade entered by student while login.
+
+*TABLE STRUCTURE CANNOT CHANGE AT RUNTIME.

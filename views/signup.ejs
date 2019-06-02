@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="signup.js"></script>
+	<!--<script type="text/javascript" src="validate.js"></script>--> 
+</head>
+<body>
+	
+	<h1 align="center">Signup</h1>
+	<hr>
+
+	<form name="signup" id="signup" align="center" method="post">
+
+		Username <input id="username" type="text" name="username" style="margin: 20px" >
+		<div id="username_message" name="username_message"></div>
+		<br>
+
+		Name <input id="name" type="text" name="name" style="margin: 20px" >
+		<br>
+
+		Email <input id="email" type="email" name="email" style="margin: 20px" >
+		<br>
+		
+		Password <input id="password" type="text" name="password" style="margin: 20px" >
+		<br>
+		
+		<button type="button" id="validate" onclick="signup_valid()" style="margin: 20px">Submit</button>
+		<button type="Submit" id="submit" hidden></button>
+
+	</form>
+
+</body>
+</html>

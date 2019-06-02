@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="profile_edit.js"></script>
+	<script type="text/javascript" src="signup.js"></script>
+	<link rel="stylesheet" type="text/css" href="profile_style.css"></a>	
+</head>
+<body>
+	
+	<h1 align="center">Profile</h1>
+	<hr>
+
+	<form name="profile" id="profile" align="center" method="post">
+		Username 
+		<input  id="username" type="text" name="username" style="margin: 20px" value = "<%= info.username %>">
+		<button type="button" class="edit" id="username_edit" value="edit">edit</button>  
+		<div id="username_message" name="username_message"></div>
+		<br>
+
+		Name <input id="name" type="text" name="name" style="margin: 20px" value="<%= info.name %>" readonly>
+		<!--<button type="button" class="edit" id="name_edit" value="edit">edit</button>-->
+		<br>
+		
+		Email <input id="email" type="email" name="email" style="margin: 20px"  value="<%= info.email %>" readonly>
+		<!--<button type="button" class="edit" id="email_edit" value="edit">edit</button>-->
+		<br>
+
+		<!--Password <input id="password" type="text" name="password" style="margin: 20px" >
+		<button type="button" class="edit" id="password_edit" value="edit">yet to decide how to implement</button>
+		<br>-->
+
+		<br><br>
+
+		<button type="button" id="validate">Submit</button>
+		<button type="Submit" id="submit" hidden=""></button>
+		<button type="button" id="cancel_btn">Cancel</button>
+
+	</form>
+
+</body>
+</html>

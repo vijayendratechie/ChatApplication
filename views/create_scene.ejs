@@ -1,0 +1,101 @@
+ <!DOCTYPE html>
+<html>
+<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="home_style.css"></a>
+		<script type="text/javascript" src="create_scenario.js"></script> 
+</head>
+<body>
+
+
+	<div class="container-fluid">
+			<div style="font-size: 65px"> Scenario</div>
+			<br>
+			<br>
+
+			<!--Scenario_info(to be hidden later) : --><input id="scenario_info" name="scenario_info" value="<%= JSON.stringify(scenario_info)%>" hidden readonly>
+			
+			School_name: <input type="text" name="school_name" id="school_name" value=" <%= school_info[0].name%> " readonly style="background-color: lightgrey">
+
+			<form name="create_scenaio" method="post">
+			<!--Option Selected(to be hidden later) : --><input name="option_selected" value="<%= option_selected %>" hidden readonly> <br>
+
+			<% if(scenario_name.length == 0) { %>
+				<!--Scenario number(to be hidden later): --><input name="scenario_no" id="scenario_no" value="<%=scenario_no %>" hidden readonly><br>
+				Scenario name: <input name="scenario_name" id="scenario_name"> 
+			
+			<% } else { %>	
+				<!--Scenario number(to be hidden later): --><input name="scenario_no" id="scenario_no" value="<%=scenario_no %>" hidden readonly> <br>
+				Scenario name: <input name="scenario_name" id="scenario_name" value="<%= scenario_name %>" readonly style="background-color: lightgrey"> 			
+			<% } %>	
+
+			<br>
+			
+			<div id="err_msg" hidden="">Scenario already exists.</div><br>
+
+
+			<!--School_id: --><input type="text" name="school_id" id="school_id" value=" <%= school_info[0].school_id%> " readonly hidden ><br><br>
+
+			<button type="button" id="bLink">link</button>
+			<table class="table table-bordered"> 
+				<thead>
+					<tr>
+						<th>Subjects</th>
+						<% for(var i=0;i< year.length;i++) { %>
+
+							<th> <%= year[i].YEAR_NAME %> </th>
+
+						<% } %>						
+					</tr>
+				</thead>  
+				<tbody>
+					<% for(var i=1;i<= subject.length;i++) { %>
+						<tr>
+							<th> <%= subject[i-1].SUBJECT %></th>
+							<% var k=0;  for(var j=1;j<= year.length;j++) { %>
+								<td> <select style="width: 250px" class="grid" id="y<%=year[k].YEAR_SEQ%>_s<%=subject[i-1].SUBJECT_ID%>" name="subject">
+									<option value="null" selected hidden="">y<%=year[k].YEAR_SEQ%>_s<%=subject[i-1].SUBJECT_ID%></option>
+									 </select> </br>
+
+									<!--<input name="grid" id="div_y<%=year[k].YEAR_SEQ%>_s<%=subject[i-1].SUBJECT_ID%>" value="" hidden="">--> 								
+									<input name="grid" value="<%=year[k].YEAR_SEQ%>" hidden="">
+								</td>
+								
+							<% k++; } %>
+						</tr>	
+					<% } %>
+					
+				</tbody> 
+			</table>
+
+			<!--<button type="button"  id="validate">Validate & Save</button>-->
+			<!--<button name="status" value="save" id="save" hidden=""></button>-->
+			<button type="button"  id="validate">Save</button>
+			<button name="status" value="save" id="save" style="margin-left: 30px" hidden=""></button>
+			</form>
+
+			<div class="container-fluid" style="margin-top: 20px">
+            	<div class="col-lg-6" id="school_box">
+           			<div class="well" style="border: 1px solid black;word-wrap: break-word;">
+           				<div id="school_label">
+							<h3>School Requirements:</h3>
+						</div>
+           				<ul id="school_list">          					
+           				</ul>	
+           			</div> 
+               	</div>
+        		<div class="col-lg-6" id="state_box">
+            		<div class="well" style="border: 1px solid black;word-wrap: break-word;">
+            			<div id="state_label">
+							<h3>State Requirements:</h3>
+						</div>
+           				<ul id="state_list">          					
+           				</ul>
+            		</div>
+        		</div>    
+			</div>
+		</div>		
+</body>
+</html>

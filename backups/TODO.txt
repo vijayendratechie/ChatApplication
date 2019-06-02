@@ -1,0 +1,6 @@
+todo:
+1. get school id from the currently logged in used first_name,last_name and email and every backend call in create_scenario.js should pass it to backend.
+2. more than 5 subjects from UI fail
+3. make single DB call instead of multiple calls
+4. remove ABC from courses which are not required for other courses
+5. ability to choose two half sem courses

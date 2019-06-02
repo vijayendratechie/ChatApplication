@@ -1,0 +1,270 @@
+function GiveUISelectedCourseForThisGradeAndTrack(CurrentUISelections, thisGrade, thisTrack)
+{
+	for(int i=0;i<CurrentUISelections.length();i++)
+	{
+		if(CurrentUISelections[i].GRADE = thisGrade && CurrentUISelections[i].TRACK = thisTrack)
+		{
+			return CurrentUISelections[i].SELECTEDCOURSEID;
+		}	
+	}
+	return null;
+}
+
+app.post("/GetAllCoursesNew",function(req,res)
+{
+
+	var RecordsForEntireGrid = [];	
+	var CurrentYears = GetYearsForSchool(iSchoolID);
+	var TheseTracks =  GetSubjectsForSchool(iSchoolID);
+
+	var school_id = Custom_Trim(req.body.iSchool_ID);
+	DBCourses = GetDBCoursesForSchool(school_id);
+
+	var CurrentUISelections = [];
+	var CurrentlySelectedCourse = null;
+	var SelectedCourseIDsForThisTrack = [];
+	var SelectedCourseIDsEntireList = [];
+	var AvailableCourses = [];
+	
+	var iSelected = false;
+
+	for(let i=0;i<req.body.arrayOfAllGridInfo.length;i++)
+	{
+		if (req.body.arrayOfAllGridInfo[i].SelectedSubjectID != null)
+		{
+			CurrentUISelections.push(
+			{						
+				GRADE : req.body.arrayOfAllGridInfo[i].GRADE,
+				TRACK : req.body.arrayOfAllGridInfo[i].SUBJECT,													
+				SELECTEDCOURSEID : 	req.body.arrayOfAllGridInfo[i].SelectedSubjectID,
+			});
+		}
+	}
+	
+	for(let i=0;i<TheseTracks.length;i++)
+	{
+		SelectedCourseIDsForThisTrack = [];
+		
+		for(let i=0;i<TheseYears.length;i++)
+		{
+			CurrentlySelectedCourse = null;
+			
+			result =[];
+			result = SQLike.q({
+					Select: ['*'],
+				   From: DBCourses ,
+					Where: function(){return (this.LGRADE <= req.body.TheseYears[i].YEAR_ID) && (this.HGRADE >= TheseYears[i].YEAR_ID) && (this.SUBJECT ==  TheseTracks[j].TRACK_ID)},
+					OrderBy: ['COURSE_ID']
+			   });
+			   
+			AvailableCourses = [];
+			for(var j=0;j<result.length;j++)
+			{						
+				iSelected = false;
+				if(result[j].MANDATORY == true)
+				{					
+					AvailableCourses.push(
+					{	COURSE_ID : result[j].COURSE_ID,
+						COURSE_NAME : result[j].NAME,
+						COURSE_SCORE : NAScore,
+						VALID : true,
+						MANDATORY : true,
+						SELECTED : true,
+						CREDIT : result[j].CREDIT,
+						LEVEL : result[j].LEVEL
+					})	;
+					 
+					break;
+				}
+				UiSelectedCourse = GiveUISelectedCourseForThisGradeAndTrack(CurrentUISelections, TheseYears[i].YEAR_ID,TheseTracks[j].TRACK_ID );
+				// if placeholder course, push it with NA score requirement.
+				if(UiSelectedCourse == result[j].COURSE_ID + ' - ' + NAScore)
+				{
+					iSelected = true;
+					
+					CurrentlySelectedCourse = result[j].COURSE_ID;
+					SelectedCourseIDsForThisTrack.push(result[j].COURSE_ID);
+					SelectedCourseIDsEntireList.push(
+						COURSE_ID : result[j].COURSE_ID,
+						SCORE : NAScore
+						TRACK :  TheseTracks[j].TRACK_ID
+						YEAR :  TheseYears[i].YEAR_ID
+						);
+				}
+				if(result[j].COURSE_ID == 0)
+				{
+					AvailableCourses.push(
+					{	COURSE_ID : result[j].COURSE_ID,
+						COURSE_NAME : result[j].NAME,
+						COURSE_SCORE : NAScore,
+						VALID : true,
+						MANDATORY : false,
+						SELECTED : iSelected,
+						CREDIT : result[j].CREDIT,
+						LEVEL : result[j].LEVEL
+					})	;
+
+				}
+				
+				//if not an placeholder couse, populate it with all possible scores.
+				//console.log("1:"+req.body.arrayOfAllGridInfo[i].SelectedSubjectID  + result[j].COURSE_ID)
+				if(result[j].COURSE_ID != 0)
+				{
+					for(var is=0;is<result_scores.length;is++)
+					{
+						iSelected = false;
+						if(UiSelectedCourse == result[j].COURSE_ID + result_scores[is][0])
+						{
+							iSelected = true;
+							
+							CurrentlySelectedCourse = result[j].COURSE_ID;
+							SelectedCourseIDsForThisTrack.push(result[j].COURSE_ID);
+							SelectedCourseIDsEntireList.push(
+								COURSE_ID : result[j].COURSE_ID,
+								SCORE : result_scores[is][0],
+								TRACK :  TheseTracks[j].TRACK_ID
+								YEAR :  TheseYears[i].YEAR_ID
+								);
+						}
+						
+						AvailableCourses.push(
+						{	COURSE_ID : result[j].COURSE_ID,
+							COURSE_NAME : result[j].NAME,
+							COURSE_SCORE : result_scores[is][0],
+							VALID : true,
+							MANDATORY : false,
+							SELECTED : iSelected,
+							CREDIT : result[j].CREDIT,
+							LEVEL : result[j].LEVEL
+						})	;
+					}	
+
+				}
+			}
+
+				RecordsForEntireGrid.push(
+				{						
+					GRADE :  TheseYears[i].YEAR_ID
+					SUBJECT : TheseTracks[j].TRACK_ID,													
+					AVAILABLECOURSES : 	AvailableCourses							
+				});
+		}	
+	}
+		//console.log("Backend Final Array is : "+ JSON.stringify(RecordsForEntireGrid));
+		res.send(RecordsForEntireGrid);
+}
+	
+	
+	
+
+}
+
+
+for(let i=0;i<TheseTracks.length;i++)
+	{
+		SelectedCourseIDsForThisTrack = [];
+		
+		for(let i=0;i<TheseYears.length;i++)
+		{
+			CurrentlySelectedCourse = null;
+			
+			result =[];
+			result = SQLike.q({
+					Select: ['*'],
+				   From: DBCourses ,
+					Where: function(){return (this.LGRADE <= TheseYears[i].YEAR) && (this.HGRADE >= TheseYears[i].YEAR_ID) && (this.SUBJECT ==  TheseTracks[j].TRACK_ID)},
+					OrderBy: ['COURSE_ID']
+			   });
+			   
+			AvailableCourses = [];
+			for(var j=0;j<result.length;j++)
+			{						
+				iSelected = false;
+				if(result[j].MANDATORY == true)
+				{					
+					AvailableCourses.push(
+					{	COURSE_ID : result[j].COURSE_ID,
+						COURSE_NAME : result[j].NAME,
+						COURSE_SCORE : NAScore,
+						VALID : true,
+						MANDATORY : true,
+						SELECTED : true,
+						CREDIT : result[j].CREDIT,
+						LEVEL : result[j].LEVEL
+					})	;
+					 
+					break;
+				}
+				UiSelectedCourse = GiveUISelectedCourseForThisGradeAndTrack(CurrentUISelections, TheseYears[i].YEAR_ID,TheseTracks[j].TRACK_ID );
+				// if placeholder course, push it with NA score requirement.
+				if(UiSelectedCourse == result[j].COURSE_ID + ' - ' + NAScore)
+				{
+					iSelected = true;
+					
+					CurrentlySelectedCourse = result[j].COURSE_ID;
+					SelectedCourseIDsForThisTrack.push(result[j].COURSE_ID);
+					SelectedCourseIDsEntireList.push({
+						COURSE_ID : result[j].COURSE_ID,
+						SCORE : NAScore,
+						TRACK :  TheseTracks[j].TRACK_ID,
+						YEAR :  TheseYears[i].YEAR_ID
+					});
+				}
+				if(result[j].COURSE_ID == 0)
+				{
+					AvailableCourses.push(
+					{	COURSE_ID : result[j].COURSE_ID,
+						COURSE_NAME : result[j].NAME,
+						COURSE_SCORE : NAScore,
+						VALID : true,
+						MANDATORY : false,
+						SELECTED : iSelected,
+						CREDIT : result[j].CREDIT,
+						LEVEL : result[j].LEVEL
+					})	;
+
+				}
+				
+				//if not an placeholder couse, populate it with all possible scores.
+				//console.log("1:"+req.body.arrayOfAllGridInfo[i].SelectedSubjectID  + result[j].COURSE_ID)
+				if(result[j].COURSE_ID != 0)
+				{
+					for(var is=0;is<result_scores.length;is++)
+					{
+						iSelected = false;
+						if(UiSelectedCourse == result[j].COURSE_ID + result_scores[is][0])
+						{
+							iSelected = true;
+							
+							CurrentlySelectedCourse = result[j].COURSE_ID;
+							SelectedCourseIDsForThisTrack.push(result[j].COURSE_ID);
+							SelectedCourseIDsEntireList.push({
+								COURSE_ID : result[j].COURSE_ID,
+								SCORE : result_scores[is][0],
+								TRACK :  TheseTracks[j].TRACK_ID,
+								YEAR :  TheseYears[i].YEAR_ID
+							});
+						}
+						
+						AvailableCourses.push(
+						{	COURSE_ID : result[j].COURSE_ID,
+							COURSE_NAME : result[j].NAME,
+							COURSE_SCORE : result_scores[is][0],
+							VALID : true,
+							MANDATORY : false,
+							SELECTED : iSelected,
+							CREDIT : result[j].CREDIT,
+							LEVEL : result[j].LEVEL
+						})	;
+					}	
+
+				}
+			}
+
+				RecordsForEntireGrid.push(
+				{						
+					GRADE :  TheseYears[i].YEAR_ID,
+					SUBJECT : TheseTracks[j].TRACK_ID,													
+					AVAILABLECOURSES : 	AvailableCourses							
+				});
+		}	

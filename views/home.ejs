@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="home_style.css"></a>
+		<link rel="stylesheet" type="text/css" href="profile_style.css"></a>
+		<link rel="stylesheet" type="text/css" href="chatbox.css"></a>
+		<script type="text/javascript" src="home.js"></script> 
+
+		<style>
+			ul {
+  				list-style-type: none;
+  				margin: 0;
+  				padding: 0;
+				}
+			li  {
+				display: inline;
+			}
+		</style>
+
+			
+</head>
+<body >
+	
+	<div class="header">
+	<h1 align="center">HOME PAGE</h1>
+	<ul class="dropdown">
+		<li >
+			<a id="username" href="http://localhost:3000/profile" style="font-size: 30px; color: #ddd; padding-right: 25px"> <%= username %> </a>
+		</li>
+		<li>
+			<a href="http://localhost:3000/logout" style="font-size: 20px; color: #ddd">Logout</a>
+		</li>
+	</ul>
+	</div>
+	
+	<div class="container">
+		<button type="button" id="trybtn">button</button>
+	  <h2>Online Users</h2>
+	  <div class="list-group" style="width : 40%">	    
+	  </div>
+	
+
+	  <div id="chat-box">
+	  	<div id="chat-username"><h4>YOU are chatting with user</h4></div>
+	  	<div id="chat-window">
+			<div id="output"></div>
+			<div id="feedback"></div>
+		</div>
+		<input id="message" type="text" placeholder="Message" /> 
+		<button class="send-button"id="send">Send</button>
+	  </div>
+	</div>	
+</body>
+</html>
