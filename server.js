@@ -19,11 +19,18 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine","ejs");
 
 //This creates a Session table in database to store established user session
-var options = {
+/*var options = {
 	host : 'localhost',
 	user : 'root',
 	password : '',
 	database : 'chat_application'
+};*/
+
+var options = {
+	host : 'us-cdbr-iron-east-02.cleardb.net',
+	user : 'b1681473ab0ff1',
+	password : '7f57f3dc',
+	database : 'heroku_6b41e1e0702fd4d'
 };
 
 var mySessionStore = new mySqlStore(options);
@@ -105,10 +112,10 @@ passport.use(new localStrategy({
 // Db connection
 var db = mysql.createConnection(
 {
-	host : 'localhost',
-	user : 'root',
-	password : '',
-	database : 'chat_application',
+	host : 'us-cdbr-iron-east-02.cleardb.net',
+	user : 'b1681473ab0ff1',
+	password : '7f57f3dc',
+	database : 'heroku_6b41e1e0702fd4d',
 	multipleStatements: true
 });
 

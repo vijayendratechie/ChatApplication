@@ -12,7 +12,7 @@ $(document).ready(function()
 			var email = $("#email").val();
 			$.ajax({
 	        type: "POST",
-	        url: "http://localhost:3000/checkotp",
+	        url: "https://testchaatapp.herokuapp.com/checkotp",
 	        data: {otp : OTP, email : email},
 	        dataType: "json",
 	        success: function (data)
@@ -61,7 +61,7 @@ $(document).ready(function()
 		{			
 			$.ajax({
 	        type: "POST",
-	        url: "http://localhost:3000/resetpassword",
+	        url: "https://testchaatapp.herokuapp.com/resetpassword",
 	        data: {newpassword : newpassword,email : email},
 	        dataType: "json",
 	        success: function (data)
@@ -95,7 +95,7 @@ function checkusername(data)
 	{
 		$.ajax({
         type: "POST",
-        url: "http://localhost:3000/checkemail",
+        url: "https://testchaatapp.herokuapp.com/checkemail",
         data: {email : username,flag : data},
         dataType: "json",
         success: function (data)
