@@ -538,25 +538,32 @@ io.on("connection",function(socket)
 		io.sockets.emit("chat",data);
 	});
 
+
 	socket.on("username",function(username)
 	{
+		
 		if(onlineusers.indexOf(username) == -1)
 		{
-			console.log("adding user to onlineusers array");
-			socket.username = username;
+			//console.log("adding user to onlineusers array");
 			onlineusers.push(username);
-			//console.log("onlineusers array : "+JSON.stringify(onlineusers));
-			io.sockets.emit("onlineusers",onlineusers);					
 		}
-		else
-		{
-			io.sockets.emit("onlineusers",onlineusers);	
-		}
+		socket.username = username;
+		sendlistofonlineusers();		
+	});
+
+	function sendlistofonlineusers()
+	{
+		io.sockets.emit("onlineusers",onlineusers);
+	}
+	socket.on("disconnect",function()
+	{
+		//console.log("name of user disconneted",socket.username);
+		onlineusers.splice(onlineusers.indexOf(socket.username),1);
+		sendlistofonlineusers();
 	})
-
-
-
 });
+
+
 
 passport.serializeUser(function(user_id,done)
 {
