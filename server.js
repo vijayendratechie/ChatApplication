@@ -227,7 +227,7 @@ app.post("/checkemail",function(req,res)
 {
 	//console.log("check email : "+JSON.stringify(req.body));
 	var email = req.body.email;
-	db.query("SELECT id AS user_id,confirm FROM student WHERE email = ?",[email],function(err,result)
+	db.query("SELECT id AS user_id,confirm FROM users WHERE email = ?",[email],function(err,result)
 	{
 		if(err)
 		{
@@ -356,7 +356,7 @@ app.post("/checkotp",function(req,res)
 app.post("/resetpassword",function(req,res)
 {
 	console.log("resetpassword data : "+JSON.stringify(req.body));
-	db.query("UPDATE student SET password=? WHERE email=?",[req.body.newpassword,req.body.email],function(err)
+	db.query("UPDATE users SET password=? WHERE email=?",[req.body.newpassword,req.body.email],function(err)
 	{
 		if(err)
 		{
@@ -642,7 +642,7 @@ function authenticationMiddleware()
 			return next();
 		}
 		
-		res.redirect("/signup");
+		res.redirect("/");
 	}	
 }
 
@@ -783,7 +783,7 @@ function sendmail(user_id,flag,OTP,email)
 		  to: email,
 		  subject: 'Confirm your mail id',
 		  //text: 'http://localhost:3000/confirmemail?user_id='+id
-		  html : '<a href="http://localhost:3000/confirmemail?user_id='+id+'" return false;>Click me</a>'
+		  html : '<a href="https://testchaatapp.herokuapp.com/confirmemail?user_id='+id+'" return false;>Click me</a>'
 		  //html : '<!DOCTYPE html><html><body><a onclick="myWindow()" href="http://localhost:3000/confirmemail?user_id=102" >click here</a><button type="button" onclick="window.close()">close</button><script>function myWindow(){ alert("closing window"); myWindow.close();}</script></body</html>'
 		  //href="http://localhost:3000/confirmemail?user_id='+id+'"
 		};	
