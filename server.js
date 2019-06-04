@@ -654,7 +654,7 @@ app.get("/google",passport.authenticate("google",{
 	scope : ['profile','email']
 }))
 
-app.get("/google/redirect",passport.authenticate("google"),function(req,res)
+app.get("https://testchaatapp.herokuapp.com/google/redirect",passport.authenticate("google"),function(req,res)
 {
 	console.log("Redirected from google: " +JSON.stringify(req.user));
 	res.redirect("/home");		
@@ -662,7 +662,7 @@ app.get("/google/redirect",passport.authenticate("google"),function(req,res)
 
 passport.use(
 		new googlestrategy({
-	callbackURL : "/google/redirect",
+	callbackURL : "https://testchaatapp.herokuapp.com/google/redirect",
 	//clientID : "509493354821-07dog3pdnbtgtukjtv2pp568u8enimpj.apps.googleusercontent.com",
 	//clientSecret : "OFaHAH2OHK2uREuCy6NP1Afs"
 	clientID : "734132093263-07tbcmloe50fjlfp5darjqasmeb6jovs.apps.googleusercontent.com", //google credentials for hosting on heroku
