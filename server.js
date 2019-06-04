@@ -27,6 +27,7 @@ app.set("view engine","ejs");
 };
 */
 
+/* For crearting sessions table in db to store user sessions */
 var options = {
 	host : 'us-cdbr-iron-east-02.cleardb.net',
 	user : 'b1681473ab0ff1',
@@ -53,6 +54,7 @@ app.use(passport.session());
 
 app.use(flash());
 
+/* Authentication using local signup */
 passport.use(new localStrategy({
 	usernameField : 'email',
 	passwordField : 'password',
@@ -528,7 +530,7 @@ app.get("/profile",authenticationMiddleware(),function(req,res)
 })
 
 
-app.post("/profile",function(req,res)
+app.post("/profile",authenticationMiddleware(),function(req,res)
 {
 	var id = req.user.user_id;
 	var username = req.body.username;
@@ -575,6 +577,7 @@ var server=app.listen(port,function()
 	console.log("listen to port 3000");
 });
 
+/*  Socket connection for chat */
 var onlineusers = {};
 var io=socket(server);
 io.on("connection",function(socket)
