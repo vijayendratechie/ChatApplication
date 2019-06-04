@@ -701,7 +701,7 @@ passport.use(
 				}
 				else if(result[0].username === "")
 				{
-					db.query("UPDATE users SET username=?,gid=? WHERE id=?",[username,googleid,result[0].user_id],function(err,result2)
+					db.query("UPDATE users SET username=?,name=?,gid=? WHERE id=?",[username,username,googleid,result[0].user_id],function(err,result2)
 					{
 						if(err)
 						{
