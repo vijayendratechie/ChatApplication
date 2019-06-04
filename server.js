@@ -24,7 +24,8 @@ app.set("view engine","ejs");
 	user : 'root',
 	password : '',
 	database : 'chat_application'
-};*/
+};
+*/
 
 var options = {
 	host : 'us-cdbr-iron-east-02.cleardb.net',
@@ -110,17 +111,27 @@ passport.use(new localStrategy({
 
 
 // Db connection
-var db = mysql.createConnection(
+
+/*var db = mysql.createConnection(
 {
+	host : 'localhost',
+	user : 'root',
+	password : '',
+	database : 'chat_application',
+	multipleStatements: true
+});
+*/
+
+var db_config = {
 	host : 'us-cdbr-iron-east-02.cleardb.net',
 	user : 'b1681473ab0ff1',
 	password : '7f57f3dc',
 	database : 'heroku_6b41e1e0702fd4d',
 	multipleStatements: true
-});
+}
 
 
-db.connect(function(err)
+/*db.connect(function(err)
 {
 	if(err)
 	{
@@ -130,7 +141,36 @@ db.connect(function(err)
 	{
 		console.log("database connection established");
 	}
-})
+})*/
+
+var db;
+
+function handleDisconnect() {
+  db = mysql.createConnection(db_config); // Recreate the connection, since
+                                                  // the old one cannot be reused.
+
+  db.connect(function(err) {              // The server is either down
+    if(err) {                                     // or restarting (takes a while sometimes).
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+    }									  // to avoid a hot loop, and to allow our node script to
+    else  								  // process asynchronous requests in the meantime.						
+    { 									  // If you're also serving http, display a 503 error.			
+    	console.log("database connection established");
+    }                                     
+  });                                     
+                                          
+  db.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+      handleDisconnect();                         // lost due to either server restart, or a
+    } else {                                      // connnection idle timeout (the wait_timeout
+      throw err;                                  // server variable configures this)
+    }
+  });
+}
+
+handleDisconnect();
 
 
 app.get("/logout",authenticationMiddleware(),function(req,res)
@@ -506,7 +546,7 @@ app.post("/profile",function(req,res)
 	});
 });
 
-var onlineusers = [];
+
 
 app.get("/home",authenticationMiddleware(),function(req,res,next)
 {
@@ -535,6 +575,7 @@ var server=app.listen(port,function()
 	console.log("listen to port 3000");
 });
 
+var onlineusers = {};
 var io=socket(server);
 io.on("connection",function(socket)
 {
@@ -545,27 +586,38 @@ io.on("connection",function(socket)
 		io.sockets.emit("chat",data);
 	});
 
+	socket.on("private_chat",function(data)
+	{
+		console.log("private_chat data is : "+JSON.stringify(data));
+		//io.sockets.emit("chat",data);
+		onlineusers[data.receiver].emit("private_chat",data)
+	});
 
 	socket.on("username",function(username)
 	{
 		
-		if(onlineusers.indexOf(username) == -1)
+		/*if(onlineusers.indexOf(username) == -1)
 		{
-			//console.log("adding user to onlineusers array");
-			onlineusers.push(username);
-		}
+			console.log("adding user to onlineusers array");
+			//onlineusers.push(username);
+		}*/
 		socket.username = username;
+		onlineusers[socket.username] = socket; 
 		sendlistofonlineusers();		
 	});
 
 	function sendlistofonlineusers()
 	{
-		io.sockets.emit("onlineusers",onlineusers);
+		//console.log(onlineusers);
+		io.sockets.emit("onlineusers",Object.keys(onlineusers));
 	}
+
+	
 	socket.on("disconnect",function()
 	{
-		//console.log("name of user disconneted",socket.username);
-		onlineusers.splice(onlineusers.indexOf(socket.username),1);
+		console.log("name of user disconneted",socket.username);
+		//onlineusers.splice(onlineusers.indexOf(socket.username),1);
+		delete onlineusers[socket.username];
 		sendlistofonlineusers();
 	})
 });
@@ -610,11 +662,11 @@ app.get("/google/redirect",passport.authenticate("google"),function(req,res)
 
 passport.use(
 		new googlestrategy({
-	callbackURL : "/google/redirect", 
-	//clientID : "401382625655-04q13otpu9i3002da3g6p9o19294sdci.apps.googleusercontent.com", //linkec with vijayendrapagare05@gmail.com
-	//clientSecret : "eQmZhBWA9VFcTtd0_Fqp2Yyg"
-	clientID : "509493354821-07dog3pdnbtgtukjtv2pp568u8enimpj.apps.googleusercontent.com",
-	clientSecret : "OFaHAH2OHK2uREuCy6NP1Afs"
+	callbackURL : "/google/redirect",
+	//clientID : "509493354821-07dog3pdnbtgtukjtv2pp568u8enimpj.apps.googleusercontent.com",
+	//clientSecret : "OFaHAH2OHK2uREuCy6NP1Afs"
+	clientID : "734132093263-07tbcmloe50fjlfp5darjqasmeb6jovs.apps.googleusercontent.com", //google credentials for hosting on heroku
+	clientSecret : "ru8T55pLk0tEf9j2JKtCTZPd"
 },function(accessToken,refreshToken,profile,done)
 {
 	console.log("redirect to passport");

@@ -31,7 +31,7 @@ function check_username(username)
 {
 	$.ajax({
     type: "GET",
-    url: "https://testchaatapp.herokuapp.com/check_username",
+    url: "http://localhost:3000/check_username",
     data: {username : username},
     dataType: "text",
     success: function (usernamestatus)

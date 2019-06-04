@@ -29,28 +29,27 @@
 	<h1 align="center">HOME PAGE</h1>
 	<ul class="dropdown">
 		<li >
-			<a id="username" href="https://testchaatapp.herokuapp.com/profile" style="font-size: 30px; color: #ddd; padding-right: 25px"> <%= username %> </a>
+			<a id="username" href="http://localhost:3000/profile" style="font-size: 30px; color: #ddd; padding-right: 25px"> <%= username %> </a>
 		</li>
 		<li>
-			<a href="https://testchaatapp.herokuapp.com/logout" style="font-size: 20px; color: #ddd">Logout</a>
+			<a href="http://localhost:3000/logout" style="font-size: 20px; color: #ddd">Logout</a>
 		</li>
 	</ul>
 	</div>
 	
 	<div class="container">
 	  <h2>Online Users</h2>
-	  <div class="list-group" style="width : 40%">	    
-	  </div>
+	  <ul class="list-group" style="width: 40%"> 
+	  </ul>
 	
 
 	  <div id="chat-box">
-	  	<div id="chat-username"><h4>YOU are chatting with user</h4></div>
-	  	<div id="chat-window">
-			<div id="output"></div>
-			<div id="feedback"></div>
+	  	<div id="chat-username"><h4 id="chat-room" name="chat-room">YOU are in a chat room</h4></div>
+	  	<div class="chat-window" id="chat-window-default">
+			<div class="output"></div>
 		</div>
 		<input id="message" type="text" placeholder="Message" /> 
-		<button class="send-button"id="send">Send</button>
+		<button class="send-button" id="send" name="default">Send</button>
 	  </div>
 	</div>	
 </body>
