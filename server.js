@@ -678,11 +678,11 @@ var tempdata;
 
 		  	console.log("sentence formed : "+sentenceform);
 		  	data.message = sentenceform;
-		  	//io.sockets.emit("chat",data);		  		
+		  	io.sockets.emit("chat",data);		  		
 		  })
 		  .catch(err => {
 		    console.log('error:', err);
-		  	//io.sockets.emit("chat",data);
+		  	io.sockets.emit("chat",data);
 		  });	
 		
 	});
