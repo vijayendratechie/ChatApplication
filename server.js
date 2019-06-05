@@ -638,9 +638,16 @@ var tempdata;
 		  		sentenceform = tempdata
 		  		obj = toneAnalysis["document_tone"];
 		  		arrayofexpression = obj["tones"];
-		  		tone = arrayofexpression[0].tone_name;
-		  		sentenceform = detectexpression(sentenceform,tone);
-		  	}
+		  		if(arrayofexpression.length == 0)
+		  		{
+		  			sentenceform = sentenceform+ ":)";
+		  		}
+		  		else
+		  		{
+		  			
+			  		tone = arrayofexpression[0].tone_name;
+			  		sentenceform = detectexpression(sentenceform,tone);	
+		  		}
 		  	else
 		  	{
 		  		var arrayofObjectsofSentencesExpression = toneAnalysis.sentences_tone;
