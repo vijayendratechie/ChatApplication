@@ -896,7 +896,7 @@ passport.use(
 			}
 			else
 			{
-				db.query("INSERT INTO users(username,name,email,gid) VALUES (?,?,?)",[username,username,email,googleid],function(err,result1)
+				db.query("INSERT INTO users(username,name,email,gid) VALUES (?,?,?,?)",[username,username,email,googleid],function(err,result1)
 				{
 					if(err)
 					{
