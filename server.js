@@ -11,6 +11,17 @@ var passport = require("passport");
 var localStrategy = require("passport-local").Strategy;
 var mySqlStore = require("express-mysql-session")(session);
 
+const ToneAnalyzerV3 = require('ibm-watson/tone-analyzer/v3');
+
+const toneAnalyzer = new ToneAnalyzerV3({
+  version: '2017-09-21',
+  iam_apikey: 'Pu3RQtNTKKDWHwXSZz0mqcZPHcQerhLPN2xo2s8sE_It',
+  url: 'https://gateway-lon.watsonplatform.net/tone-analyzer/api',
+  headers: {
+    'X-Watson-Learning-Opt-Out': 'true'
+  }
+});
+
 var flash = require("connect-flash");
 var app = express();
 
@@ -514,7 +525,7 @@ app.get("/profile",authenticationMiddleware(),function(req,res)
 	var id = req.user.user_id;
 	
 	var query = "SELECT username,name,email FROM users WHERE id = ?";
-	db.query(query, [id],function(err,result,fields)
+	db.query(query, [id],function(err,result)
 	{
 		if(err)
 		{
@@ -522,6 +533,7 @@ app.get("/profile",authenticationMiddleware(),function(req,res)
 		}
 		else
 		{
+			console.log("result1 is : "+JSON.stringify(result));
 			res.render("profile",{info : result[0]});
 		}
 	});	
@@ -577,24 +589,176 @@ var server=app.listen(port,function()
 	console.log("listen to port 3000");
 });
 
+
+function detectexpression(sentenceform,tone)
+{
+	if(tone == "Joy" || tone == "joy" || tone == "Polite" || tone == "polite" || tone == "Sympathetic" || tone == "sympathetic")
+	{
+		expression = ":)";
+		sentenceform=sentenceform+expression;
+	}
+	else if(tone == "Sad" || tone == "sad" || tone == "fear" || tone == "Fear")
+	{
+		expression = ":(";
+		sentenceform=sentenceform+expression;
+	}
+	else
+	{
+		expression = ":|";
+		sentenceform=sentenceform+expression;
+	}
+
+	return sentenceform;
+}
+
+
 /*  Socket connection for chat */
 var onlineusers = {};
 var io=socket(server);
 io.on("connection",function(socket)
 {
 	console.log("socket connection established");
+var tempdata;
 
 	socket.on("chat",function(data)
 	{
-		io.sockets.emit("chat",data);
+		//{message : message,sender : username}
+		tempdata = data.message;
+		const toneParams = {
+		  tone_input: { 'text': tempdata },
+		  content_type: 'application/json',
+		};
+
+		toneAnalyzer.tone(toneParams)
+		  .then(toneAnalysis => {
+		  	//console.log(JSON.stringify(toneAnalysis, null, 2));		  	
+		    var expression,obj,arrayofexpression,tone,sentenceform="";
+		  	if(!toneAnalysis.hasOwnProperty("sentences_tone"))
+		  	{
+		  		sentenceform = tempdata
+		  		obj = toneAnalysis["document_tone"];
+		  		arrayofexpression = obj["tones"];
+		  		tone = arrayofexpression[0].tone_name;
+		  		sentenceform = detectexpression(sentenceform,tone);
+		  	}
+		  	else
+		  	{
+		  		var arrayofObjectsofSentencesExpression = toneAnalysis.sentences_tone;
+		  	
+			  	for(let i=0;i<arrayofObjectsofSentencesExpression.length;i++)
+			  	{
+			  		//Joy Fear Polite Sad Sympathetic Analytical Sadness
+			  		obj = arrayofObjectsofSentencesExpression[i];
+			  		//console.log("each sentence info : "+JSON.stringify(obj));
+			  		if(sentenceform == "")
+			  		{
+			  			sentenceform = sentenceform+obj.text;	
+			  		}
+			  		else
+			  		{
+			  			sentenceform = sentenceform +"\n"+obj.text;
+			  		}
+			  		
+			  		arrayofexpression = obj.tones;
+			  		//console.log("arrayofexpression"+JSON.stringify(arrayofexpression));
+			  		if(arrayofexpression.length != 0)
+			  		{
+			  			tone = arrayofexpression[0].tone_name;
+				  		//console.log("tone of each sentence:"+JSON.stringify(tone));
+				  		//console.log("\n\n\n");
+				  		sentenceform = detectexpression(sentenceform,tone);			  			
+			  		}
+			  		else
+			  		{
+			  			expression = ":|";
+				  		sentenceform=sentenceform+expression;
+			  		}		  		
+			  	}	
+		  	}
+
+		  	console.log("sentence formed : "+sentenceform);
+		  	data.message = sentenceform;
+		  	//io.sockets.emit("chat",data);		  		
+		  })
+		  .catch(err => {
+		    console.log('error:', err);
+		  	//io.sockets.emit("chat",data);
+		  });	
+		
 	});
 
 	socket.on("private_chat",function(data)
 	{
-		console.log("private_chat data is : "+JSON.stringify(data));
+		//console.log("private_chat data is : "+JSON.stringify(data));
 		//io.sockets.emit("chat",data);
-		onlineusers[data.receiver].emit("private_chat",data)
+		//tone analyzer function
+		//onlineusers[data.receiver].emit("private_chat",data);
+	
+		tempdata = data.message;
+		
+		const toneParams = {
+		  tone_input: { 'text': tempdata },
+		  content_type: 'application/json',
+		};
+
+		toneAnalyzer.tone(toneParams)
+		  .then(toneAnalysis => {
+		  	//console.log(JSON.stringify(toneAnalysis, null, 2));		  	
+		    var expression,obj,arrayofexpression,tone,sentenceform="";
+		  	if(!toneAnalysis.hasOwnProperty("sentences_tone"))
+		  	{
+		  		sentenceform = tempdata
+		  		obj = toneAnalysis["document_tone"];
+		  		arrayofexpression = obj["tones"];
+		  		tone = arrayofexpression[0].tone_name;
+		  		sentenceform = detectexpression(sentenceform,tone);
+		  	}
+		  	else
+		  	{
+		  		var arrayofObjectsofSentencesExpression = toneAnalysis.sentences_tone;
+		  	
+			  	for(let i=0;i<arrayofObjectsofSentencesExpression.length;i++)
+			  	{
+			  		//Joy Fear Polite Sad Sympathetic Analytical Sadness
+			  		obj = arrayofObjectsofSentencesExpression[i];
+			  		//console.log("each sentence info : "+JSON.stringify(obj));
+			  		if(sentenceform == "")
+			  		{
+			  			sentenceform = sentenceform+obj.text;	
+			  		}
+			  		else
+			  		{
+			  			sentenceform = sentenceform +"\n"+obj.text;
+			  		}
+			  		
+			  		arrayofexpression = obj.tones;
+			  		//console.log("arrayofexpression"+JSON.stringify(arrayofexpression));
+			  		if(arrayofexpression.length != 0)
+			  		{
+			  			tone = arrayofexpression[0].tone_name;
+				  		//console.log("tone of each sentence:"+JSON.stringify(tone));
+				  		//console.log("\n\n\n");
+				  		sentenceform = detectexpression(sentenceform,tone);			  			
+			  		}
+			  		else
+			  		{
+			  			expression = ":|";
+				  		sentenceform=sentenceform+expression;
+			  		}		  		
+			  	}	
+		  	}
+
+		  	console.log("sentence formed : "+sentenceform);
+		  	data.message = sentenceform;
+		  	onlineusers[data.receiver].emit("private_chat",data);		  		
+		  })
+		  .catch(err => {
+		    console.log('error:', err);
+		  	onlineusers[data.receiver].emit("private_chat",data);
+		  });
+
 	});
+
 
 	socket.on("username",function(username)
 	{
