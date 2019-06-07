@@ -9,12 +9,36 @@
 	<script type="text/javascript" src="signup.js"></script>
 	<link rel="stylesheet" type="text/css" href="profile_style.css"></a>
 	<link rel="stylesheet" type="text/css" href="login_style.css"></a>		
+
+	<style>
+		ul {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+		li  {
+			display: inline;
+		}
+	</style>
+
 </head>
 <body>
 	
+	<div class="header">
+	<h1 align="center">Welcome to Chat Application</h1>
+	<ul class="rightalign">
+		<li >
+			<a id="displayusername" href="https://testchaatapp.herokuapp.com/home" style="font-size: 30px; color: #ddd; padding-right: 25px"> <%=info.username%> </a>
+		</li>
+		<li>
+			<a href="https://testchaatapp.herokuapp.com/logout" style="font-size: 20px; color: #ddd">Logout</a>
+		</li>
+	</ul>
+	</div>
+
 	<div class="login-form">
 	    <form name="profile" id="profile" align="center" method="post">
-	        <h2 class="text-center">Profile edit</h2>    
+	        <h2 class="text-center">Profile</h2>    
 			<div class="form-group">
 				 <div class="row">
 				    <div class="col-sm-9">

@@ -1,3 +1,23 @@
+body{
+    font-family: 'Nunito';
+}
+
+.header {
+    padding: 40px;
+    padding-bottom: 40px;
+    text-align: center;
+    color: #ddd;
+    background-color: black;
+}
+
+.rightalign {
+    position: relative;
+    display: inline-block;
+    float : right;
+    margin-right: 20px;
+    z-index: 1;
+}
+
 .login-form {
 	width: 340px;
 	margin: 50px auto;

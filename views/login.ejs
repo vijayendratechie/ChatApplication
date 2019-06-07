@@ -9,11 +9,15 @@
 	<script type="text/javascript" src="login_validate.js"></script> 
 	<link rel="stylesheet" type="text/css" href="login_style.css"></a>
 </head>
-<body>	
+<body>
+	
+	<div class="header">
+		<h1 align="center">Chat Application</h1>
+	</div>	
 
 	<div class="login-form">
 		    <form name="login" id="login" align="center" method="post" action="/login">
-		        <h2 class="text-center">Log in</h2>
+		        <h2 class="text-center">Login</h2>
 		        <% if(message) { %>
 					<div id="error" name="error" align="center" class="alert alert-danger" > <%= message %> </div>
 				<% } %>
