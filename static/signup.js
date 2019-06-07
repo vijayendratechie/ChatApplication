@@ -40,11 +40,13 @@ function check_username(username)
     	if(usernamestatus == "available")
     	{
     		$("#validate").attr("disabled",false);			
-			$("#username_message").html("username available");
+			$("#username_message").html("<font color='green'>Username available</font>");
+    		$("#username_message").attr("hidden",false);
     	}
     	else if(usernamestatus == "notavailable")
     	{
-    		$("#username_message").html("username already taken");		
+    		$("#username_message").html("<font color='red'>Username not available</font>");		
+    		$("#username_message").attr("hidden",false);		
     	}
     },
     error: function(XMLHttpRequest, textStatus, errorThrown)

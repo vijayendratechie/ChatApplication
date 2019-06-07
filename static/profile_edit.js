@@ -52,20 +52,24 @@ $(document).ready(function()
 
 	$("#validate").click(function()
 	{
-		username = $("#username").val();
+		var newusername = $("#username").val();
 		//email = $("#email").val();
 
 		if(username == "")
 		{
 			alert("Enter all fields");
 		}
+		else if(username == newusername)
+		{
+			alert("No change");
+		}
 		else
 		{
 			//console.log(" username: "+ username +"\n email: "+ email);	
 			
-			alert("form submitted");  //get acknowledgment from server before displaying this message;
+			alert("Submittig form");  //get acknowledgment from server before displaying this message;
  			$("#submit").click();			
-		}		
+		}				
 	});
 
 	$("#cancel_btn").click(function()

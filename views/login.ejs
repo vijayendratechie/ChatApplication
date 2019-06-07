@@ -1,81 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-	<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<!-- <script type="text/javascript" src="signup.js"></script> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="login_validate.js"></script> 
-	<!--<link rel="stylesheet" type="text/css" href="login_style.css"></a>-->
+	<link rel="stylesheet" type="text/css" href="login_style.css"></a>
 </head>
-<body>
+<body>	
 
-	<h1 align="center">Login</h1>
-	<hr>
-
-	<% if(message) { %>
-		<h3 name="error" align="center" id="error"> <%= message %> </h3>
-	<% } %>
-		<h3 name="emailmessage" align="center" id="emailmessage" hidden=""></h2>
-		<form name="login" id="login" align="center" method="post" action="/login">
-			Email-id <input id="email" type="text" name="email" style="margin: 20px" >
-			<br>
-			Password <input id="password" type="text" name="password" style="margin: 20px" >
-			<br>
-
-			<button type="button" class="btn btn-link" id="checkemail" onclick="checkusername('mail')">Resend confirmation mail</button>
-			<!--<button type="button" class="btn btn-link" id="forgotpassword" onclick="checkusername('password')" >Forgot password?</button>-->
-			<button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" id="passwordModal"></button>
-			 <br>
-					
-			<button type="button" id="validate" onclick="login_valid()" style="margin: 20px ">Submit</button>
-			<button type="Submit" id="submit" hidden></button> <br><br>			
-		</form>
-
+	<div class="login-form">
+		    <form name="login" id="login" align="center" method="post" action="/login">
+		        <h2 class="text-center">Log in</h2>
+		        <% if(message) { %>
+					<div id="error" name="error" align="center" class="alert alert-danger" > <%= message %> </div>
+				<% } %>
+					<div name="emailmessage" align="center" class="alert alert-info" id="emailmessage" hidden=""></div>       
+		        <div class="form-group">
+		            <input type="text" id="email" name="email" class="form-control" placeholder="Email-id">
+		        </div>
+		        <div class="form-group">
+		            <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+		        </div>
+		        <div class="form-group">
+		            <button type="button" id="validate" onclick="login_valid()" class="btn btn-primary btn-block">Log in</button>
+		       		<button type="Submit" id="submit" hidden></button>
+		        </div>
+		        <div class="clearfix">
+		        	<button type="button" class="btn btn-link btn-sm">
+		        	<a href="https://testchaatapp.herokuapp.com/google" style="font-size: 20px ">Google login</a>
+		           	</button>
+		           	<div>
+		            <button type="button" class="btn btn-link btn-sm" id="checkemail" onclick="checkusername('mail')">Resend confirmation mail</button>
+		            </div>	            
+		        </div>        
+		    </form>
+		    <p class="text-center"><a href="https://testchaatapp.herokuapp.com/signup">Create an Account</a></p>
+		</div>
 	
-	  <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-	    Open modal
-	  </button>-->
-
-	  <!-- The Modal -->
-	  <div class="modal fade" id="myModal">
-	    <div class="modal-dialog modal-dialog-centered">
-	      <div class="modal-content">
-	      
-	        <!-- Modal Header -->
-	        <div class="modal-header" >
-	          <div class="modal-title" id="modalMessage" align="center"></div>
-	          <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        </div>
-	        
-	        <!-- Modal body -->
-	        <div class="modal-body" id="OTPbody">
-	          <div style="margin-left: 20px">Enter OPT   : <input type="text" name="OTP" id="OTP" style="margin-left: 10px"></div> <br>
-	          <div align="center"><button type="button" id="OTPsubmit" align="center">Submit</button> </div>
-	        </div>
-
-	        <div class="modal-body" id="passwordbody" hidden="">
-	          
-	          <div style="margin-left: 10px">Enter New Password : <input type="text" name="newpassword" id="newpassword" style="margin-left: 10px"></div> <br>
-	          <div style="margin-left: 10px">Confirm Password : <input type="text" name="confirmpassword" id="confirmpassword" style="margin-left: 10px"></div> <br>
-	          <div align="center"><button type="button" id="passwordvalidate" align="center">Submit</button> </div>
-	        </div>
-	        
-	        <!-- Modal footer -->
-	        <!--<div class="modal-footer">
-	          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        </div>-->
-	        
-	      </div>
-	    </div>
-	  </div>
+	 
 </body>
 </html>

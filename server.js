@@ -196,8 +196,8 @@ app.get("/logout",authenticationMiddleware(),function(req,res)
 
 app.get("/",function(req,res) 
 {	
-		//res.render("signup")
-		res.sendFile(__dirname + "/HS.html");
+		res.render("login",{message : false});
+		//res.sendFile(__dirname + "/HS.html");
 });
 
 

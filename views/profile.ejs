@@ -2,41 +2,43 @@
 <html>
 <head>	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="profile_edit.js"></script>
 	<script type="text/javascript" src="signup.js"></script>
-	<link rel="stylesheet" type="text/css" href="profile_style.css"></a>	
+	<link rel="stylesheet" type="text/css" href="profile_style.css"></a>
+	<link rel="stylesheet" type="text/css" href="login_style.css"></a>		
 </head>
 <body>
 	
-	<h1 align="center">Profile</h1>
-	<hr>
-
-	<form name="profile" id="profile" align="center" method="post">
-		Username 
-		<input  id="username" type="text" name="username" style="margin: 20px" value = "<%= info.username %>">
-		<button type="button" class="edit" id="username_edit" value="edit">edit</button>  
-		<div id="username_message" name="username_message"></div>
-		<br>
-
-		Name <input id="name" type="text" name="name" style="margin: 20px" value="<%= info.name %>" readonly>
-		<!--<button type="button" class="edit" id="name_edit" value="edit">edit</button>-->
-		<br>
-		
-		Email <input id="email" type="email" name="email" style="margin: 20px"  value="<%= info.email %>" readonly>
-		<!--<button type="button" class="edit" id="email_edit" value="edit">edit</button>-->
-		<br>
-
-		<!--Password <input id="password" type="text" name="password" style="margin: 20px" >
-		<button type="button" class="edit" id="password_edit" value="edit">yet to decide how to implement</button>
-		<br>-->
-
-		<br><br>
-
-		<button type="button" id="validate">Submit</button>
-		<button type="Submit" id="submit" hidden=""></button>
-		<button type="button" id="cancel_btn">Cancel</button>
-
-	</form>
+	<div class="login-form">
+	    <form name="profile" id="profile" align="center" method="post">
+	        <h2 class="text-center">Profile edit</h2>    
+			<div class="form-group">
+				 <div class="row">
+				    <div class="col-sm-9">
+						<input id="username" type="text" name="username" class="form-control" value = "<%= info.username %>" placeholder="Username">    	
+				    </div>
+				    <div class="col-sm-3" style="align-self: center;">
+						<button type="button" class="edit" id="username_edit" value="edit">edit</button>   	   
+				    </div>
+				  </div>        
+	           <div><div id="username_message" name="username_message" style="margin-top: 6px" hidden></div></div>
+	        </div>
+	        <div class="form-group">
+	            <input id="name" type="text" name="name" class="form-control" value="<%= info.name %>" readonly>
+	        </div>
+	        <div class="form-group">
+	            <input type="email" id="email" name="email" class="form-control" value="<%= info.email %>" readonly>
+	        </div>
+	        <div class="form-group">
+	            <button type="button" id="validate" onclick="signup_valid()" class="btn btn-primary btn-block">Submit</button>
+	       		<button type="Submit" id="submit" hidden></button>
+	        </div>
+	        <button type="button" id="cancel_btn" class="btn btn-primary">Cancel</button>     
+	    </form>	    
+	</div>
 
 </body>
 </html>
