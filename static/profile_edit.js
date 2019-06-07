@@ -27,7 +27,7 @@ $(document).ready(function()
 				$("#username").val(username);
 				$("#username").prop('readonly', true);
 				$('#username_edit').html("edit");
-				("#username_message").attr("hidden",true);
+				$("#username_message").attr("hidden",true);
 		}
 	});	
 	
