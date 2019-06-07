@@ -948,7 +948,7 @@ function sendmail(user_id,flag,OTP,email)
 	var id =	user_id.user_id;
 	console.log("email while sending mail is : "+email);
 	//console.log("id is: "+ JSON.stringify(window_name));
-	var transporter = nodemailer.createTransport({
+	/*var transporter = nodemailer.createTransport({
 	  service: 'gmail',
 	  auth: {
 	    user: 'vijayendracourse@gmail.com',
@@ -957,7 +957,18 @@ function sendmail(user_id,flag,OTP,email)
      tls: {
             rejectUnauthorized: false
      }
-	});	
+	});*/
+
+	var transporter = nodemailer.createTransport({
+		service : 'gmail',
+		auth : {
+			type : "oauth2",	
+			user : 'vijayendracourse@gmail.com',
+			clientId : '734132093263-07tbcmloe50fjlfp5darjqasmeb6jovs.apps.googleusercontent.com',
+			clientSecret : 'ru8T55pLk0tEf9j2JKtCTZPd',
+			refreshToken :  '1/bnD8nGeCOvF8cN0IMKMmJaHn7U5Tsgj2oKR-gMdVPJg'	
+		}
+	})	
 
 	if(flag == 'confirmation')
 	{
