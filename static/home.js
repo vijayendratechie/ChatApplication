@@ -112,7 +112,7 @@ $(document).ready(function()
 			$(".list-group").empty();
 			$(".output").empty();
 			$(".list-group").html("<li class='list-group-item'>No online users</li>");
-			$("#chat-username").html("<h4 id='chat-room' name='chat-room'>YOU are in a chat room</h4>");
+			$("#chat-username").html("<h3 id='chat-room' name='chat-room' style='padding-left: 20px'>You are in a chat room</h3>");
 			$("#send").attr("name","default");
 			notification = {};
 		}
@@ -164,7 +164,7 @@ $(document).ready(function()
 			if(flag==0 && $("#chat-room").attr("name") != "chat-room")
 			{
 				$(".output").empty();
-				$("#chat-username").html("<h4 id='chat-room' name='chat-room'>User went offline.YOU are in a chat room</h4>");		
+				$("#chat-username").html("<h3 id='chat-room' name='chat-room' style='padding-left: 20px'>User went offline.YOU are in a chat room</h3>");		
 				$("#send").attr("name","default");
 			}			
 		}
@@ -174,7 +174,7 @@ $(document).ready(function()
 			//alert($(this).html());
 			$("#"+$(this).html().trim()).find("div").empty();
 			$(".output").empty();
-			$("#chat-username").html("<h4 id='chat-room' name='"+$(this).html()+"'>YOU are in a private chat with "+$(this).html()+"</h4>");
+			$("#chat-username").html("<h3 id='chat-room' name='"+$(this).html()+"' style='padding-left: 20px'>YOU are in a private chat with "+$(this).html()+"</h3>");
 			$("#send").attr("name",$(this).html());
 
 			messagefocus();
