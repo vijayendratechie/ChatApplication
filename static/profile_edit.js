@@ -53,16 +53,12 @@ $(document).ready(function()
 
 	$("#validate").click(function()
 	{
-		var newusername = $("#username").val();
+		//var newusername = $("#username").val();
 		//email = $("#email").val();
 
 		if(username == "")
 		{
 			alert("Enter all fields");
-		}
-		else if(username == newusername)
-		{
-			alert("No change");
 		}
 		else
 		{

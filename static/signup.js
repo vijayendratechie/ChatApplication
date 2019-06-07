@@ -63,6 +63,8 @@ function signup_valid()
 	email = $("#email").val();
 	password = $("#password").val();
 
+	
+
 
 	if(username == "" || name == "" || email == "" || password == "")
 	{
