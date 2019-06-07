@@ -110,6 +110,7 @@ $(document).ready(function()
 		if(onlineusers.length == 1)
 		{
 			$(".list-group").empty();
+			$(".output").empty();
 			$(".list-group").html("<li class='list-group-item'>No online users</li>");
 			$("#chat-username").html("<h4 id='chat-room' name='chat-room'>YOU are in a chat room</h4>");
 			$("#send").attr("name","default");
