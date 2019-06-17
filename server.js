@@ -200,6 +200,51 @@ app.get("/",function(req,res)
 		//res.sendFile(__dirname + "/HS.html");
 });
 
+app.get("/home/admin",admincheck(),function(req,res)
+{
+	db.query("Select * FROM users",function(err,result)
+	{
+		if(err)
+		{
+			console.log("Error retreiving all users from db : "+err);
+		}
+		else
+		{
+			res.json(result);			
+		}
+	})
+})
+
+function admincheck(req,res,next)
+{
+	return (req,res,next) => 
+	{
+		var id = req.user.user_id;
+		//db.query("SELECT `email` FROM users WHERE id=?",[id],function(err,result)
+		db.query("SELECT `email` FROM users WHERE id=?",[id],function(err,result)
+		{
+			if(err)
+			{
+				console.log("Error while retreiving email of admin : "+err);
+			}
+			else
+			{
+				console.log("email id : "+ JSON.stringify(result[0].email));
+				if(result[0].email == "vijayendrapagare05@gmail.com")
+				{
+					console.log("in if");
+					return next();
+				}
+				else
+				{
+					console.log("in else");
+					res.redirect("/");			
+				}
+			}
+		})		
+	}	
+}
+
 
 app.get("/login",function(req,res) 
 {	
